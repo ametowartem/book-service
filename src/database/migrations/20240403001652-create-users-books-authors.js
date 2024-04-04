@@ -36,30 +36,6 @@ module.exports = {
       `,
     );
 
-    // await queryInterface.sequelize.query(
-    //   `
-    //     CREATE TABLE IF NOT EXISTS books_authors(
-    //         uuid uuid DEFAULT gen_random_uuid() primary key,
-    //         book_uuid uuid not null,
-    //         author_uuid uuid not null
-    //     )
-    //   `,
-    // );
-
-    // await queryInterface.sequelize.query(
-    //   `
-    //         ALTER TABLE books_authors
-    //         ADD FOREIGN KEY (book_uuid) REFERENCES books(uuid)
-    //   `,
-    // );
-    //
-    // await queryInterface.sequelize.query(
-    //   `
-    //         ALTER TABLE books_authors
-    //         ADD FOREIGN KEY (author_uuid) REFERENCES authors(uuid)
-    //   `,
-    // );
-
     await queryInterface.sequelize.query(
       `
             ALTER TABLE books 

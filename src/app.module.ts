@@ -45,7 +45,5 @@ import { OrderBook } from './order/entity/order-book.entity';
       inject: [ConfigService],
     }),
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

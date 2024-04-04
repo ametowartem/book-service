@@ -28,5 +28,4 @@ export class Order extends Model<Order> {
 
   @BelongsToMany(() => Book, () => OrderBook)
   books?: Book[];
-  // books?: Array<Book & { OrderBook: OrderBook }>;
 }
