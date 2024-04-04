@@ -45,7 +45,7 @@ export class OrderRepository {
     }
   }
 
-  async GetOrdersByBookNameOrAuthor(dto: IGetOrders) {
+  async getOrdersByBookNameOrAuthor(dto: IGetOrders) {
     const books: Array<Book> = [];
     if (dto.bookName) {
       books.push(
@@ -73,7 +73,7 @@ export class OrderRepository {
     });
   }
 
-  async GetOrderByUuid(dto: IGetOrderByUuid): Promise<Order> {
+  async getOrderByUuid(dto: IGetOrderByUuid): Promise<Order> {
     return await this.orderModel.findOne({
       where: {
         uuid: dto.uuid,

@@ -15,14 +15,14 @@ export class OrderController {
   }
 
   @Get('')
-  async GetOrdersByBookNameOrAuthor(
+  async getOrdersByBookNameOrAuthor(
     @Query() dto: GetOrdersRequestDto,
   ): Promise<Order[]> {
-    return await this.orderService.GetOrdersByBookNameOrAuthor(dto);
+    return await this.orderService.getOrdersByBookNameOrAuthor(dto);
   }
 
   @Get(':uuid')
-  async GetOrderByUuid(@Param() dto: GetOrderByUuidRequestDto): Promise<Order> {
-    return await this.orderService.GetOrderByUuid(dto);
+  async getOrderByUuid(@Param() dto: GetOrderByUuidRequestDto): Promise<Order> {
+    return await this.orderService.getOrderByUuid(dto);
   }
 }

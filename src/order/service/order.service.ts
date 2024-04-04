@@ -13,11 +13,11 @@ export class OrderService {
     return await this.orderRepository.create(dto);
   }
 
-  async GetOrdersByBookNameOrAuthor(dto: IGetOrders): Promise<Order[]> {
-    return await this.orderRepository.GetOrdersByBookNameOrAuthor(dto);
+  async getOrdersByBookNameOrAuthor(dto: IGetOrders): Promise<Order[]> {
+    return await this.orderRepository.getOrdersByBookNameOrAuthor(dto);
   }
 
-  async GetOrderByUuid(dto: IGetOrderByUuid): Promise<Order> {
-    return await this.orderRepository.GetOrderByUuid(dto);
+  async getOrderByUuid(dto: IGetOrderByUuid): Promise<Order> {
+    return await this.orderRepository.getOrderByUuid(dto);
   }
 }
