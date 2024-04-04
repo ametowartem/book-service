@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Order } from '../entity/order.entity';
@@ -10,6 +11,9 @@ import { Book } from '../../book/entity/book.entity';
 import { BookRepository } from '../../book/repository/book.repository';
 import { IGetOrders } from '../interface/get-orders.interface';
 import { IGetOrderByUuid } from '../interface/get-order-by-uuid.interface';
+import { Sequelize } from 'sequelize-typescript';
+import { Author } from '../../author/entity/author.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class OrderRepository {
@@ -46,31 +50,40 @@ export class OrderRepository {
   }
 
   async getOrdersByBookNameOrAuthor(dto: IGetOrders) {
-    const books: Array<Book> = [];
+    let whereClause = {};
     if (dto.bookName) {
-      books.push(
-        await this.bookRepository.getBookByName({ name: dto.bookName }),
-      );
+      whereClause = { name: dto.bookName };
     }
 
-    if (dto.author) {
-      books.push(
-        ...(await this.bookRepository.getBooksByAuthor({ author: dto.author })),
-      );
-    }
-
-    return await this.orderModel.findAll({
-      include: [
-        {
-          model: Book,
-          where: {
-            uuid: books.map((el) => {
-              return el.uuid;
-            }),
+    try {
+      return await this.orderModel.findAll({
+        include: [
+          {
+            model: Book,
+            include: [
+              {
+                model: Author,
+                where: Sequelize.where(
+                  Sequelize.fn(
+                    'concat',
+                    Sequelize.col('first_name'),
+                    ' ',
+                    Sequelize.col('patronymic'),
+                    ' ',
+                    Sequelize.col('last_name'),
+                  ),
+                  { [Op.like]: `%${dto.author || ''}%` },
+                ),
+              },
+            ],
+            where: whereClause,
           },
-        },
-      ],
-    });
+        ],
+      });
+    } catch (e) {
+      this.logger.log(e);
+      throw new NotFoundException('Заказ с такими параметрами не найден');
+    }
   }
 
   async getOrderByUuid(dto: IGetOrderByUuid): Promise<Order> {
